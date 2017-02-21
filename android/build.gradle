@@ -1,0 +1,44 @@
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 22
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled = true
+    }
+    packagingOptions {
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt')
+        }
+    }
+    lintOptions {
+       warning 'InvalidPackage'
+    }
+}
+
+dependencies {
+    compile 'com.android.support:multidex:1.0.1'
+    compile 'com.android.support:appcompat-v7:25.1.0'
+    compile 'org.jmrtd:jmrtd:0.5.5'
+    compile 'net.sf.scuba:scuba-sc-android:0.0.9'
+    compile 'com.madgag.spongycastle:prov:1.54.0.0'
+    compile 'edu.ucar:jj2000:5.2'
+    compile 'com.github.mhshams:jnbis:1.1.0'
+    compile 'com.facebook.react:react-native:+'
+}
+
+
