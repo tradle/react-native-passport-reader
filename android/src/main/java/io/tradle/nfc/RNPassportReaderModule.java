@@ -258,7 +258,7 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     bitmap.compress(Bitmap.CompressFormat.JPEG, quality, byteArrayOutputStream);
     byte[] byteArray = byteArrayOutputStream.toByteArray();
-    return JPEG_DATA_URI_PREFIX + Base64.encodeToString(byteArray, Base64.DEFAULT);
+    return JPEG_DATA_URI_PREFIX + Base64.encodeToString(byteArray, Base64.NO_WRAP);
   }
 
   private class ReadTask extends AsyncTask<Void, Void, Exception> {
