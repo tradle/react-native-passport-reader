@@ -1,4 +1,3 @@
-
 apply plugin: 'com.android.library'
 
 android {
@@ -31,14 +30,14 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    compile 'org.jmrtd:jmrtd:0.5.5'
-    compile 'net.sf.scuba:scuba-sc-android:0.0.9'
-    compile 'com.madgag.spongycastle:prov:1.54.0.0'
-    compile 'edu.ucar:jj2000:5.2'
-    compile 'com.github.mhshams:jnbis:1.1.0'
-    compile 'com.facebook.react:react-native:+'
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'com.android.support:appcompat-v7:25.1.0'
+    implementation 'org.jmrtd:jmrtd:0.5.5'
+    implementation 'net.sf.scuba:scuba-sc-android:0.0.9'
+    implementation 'com.madgag.spongycastle:prov:1.54.0.0'
+    implementation 'edu.ucar:jj2000:5.2'
+    implementation 'com.github.mhshams:jnbis:1.1.0'
+    implementation 'com.facebook.react:react-native:+'
 }
 
 
