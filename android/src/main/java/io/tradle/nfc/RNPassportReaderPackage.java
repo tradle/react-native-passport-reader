@@ -32,6 +32,8 @@ public class RNPassportReaderPackage implements ReactPackage {
       return Arrays.<NativeModule>asList(new RNPassportReaderModule(reactContext));
     }
 
+    // No more method `createJSModules` in the Abstract Class `ReactPackage`
+    // @Override 
     public List<Class<? extends JavaScriptModule>> createJSModules() {
       return Collections.emptyList();
     }
