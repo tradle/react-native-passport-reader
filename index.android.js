@@ -1,10 +1,11 @@
 import { NativeEventEmitter, NativeModules } from 'react-native'
 
 const { RNPassportReader } = NativeModules
+const Emitter = new NativeEventEmitter(RNPassportReader)
 
 const DATE_REGEX = /^\d{6}$/
 
-const constants = RNPassportReader?.getConstants?.() || {}
+const constants = RNPassportReader.getConstants()
 
 module.exports = {
   ...RNPassportReader,
@@ -17,8 +18,6 @@ async function scan ({ documentNumber, dateOfBirth, dateOfExpiry, quality = 1, o
   assert(isDate(dateOfBirth), 'expected string "dateOfBirth" in format "yyMMdd"')
   assert(isDate(dateOfExpiry), 'expected string "dateOfExpiry" in format "yyMMdd"')
   
-  const Emitter = new NativeEventEmitter(RNPassportReader)
-
   const listener = Emitter.addListener(constants.EVENT_NFC_PROGRESS, onProgress)
   
   try {
