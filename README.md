@@ -34,7 +34,15 @@ If your app will not function without nfc capabilities, set `android:required` a
 ## Usage
 ```js
 import PassportReader from 'react-native-passport-reader'
-// { scan, cancel, isSupported, constants }
+// { scan, cancel, constants }
+
+// Available constants (Android):
+// - isSupported
+// - NFC_PROGRESS_ACCESS
+// - NFC_PROGRESS_PERSONAL_INFO
+// - NFC_PROGRESS_PHOTO
+// - NFC_PROGRESS_VERIFICATION
+
 
 async function scan () {
   // 1. start a scan

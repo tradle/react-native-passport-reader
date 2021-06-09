@@ -19,15 +19,11 @@ async function scan ({ documentNumber, dateOfBirth, dateOfExpiry, quality = 1, o
   assert(isDate(dateOfExpiry), 'expected string "dateOfExpiry" in format "yyMMdd"')
   
   const listener = Emitter.addListener(constants.EVENT_NFC_PROGRESS, onProgress)
-  
+
   try {
-    const result = await RNPassportReader.scan({ documentNumber, dateOfBirth, dateOfExpiry, quality })
-    
+    return await RNPassportReader.scan({ documentNumber, dateOfBirth, dateOfExpiry, quality })
+  } finally {
     listener.remove()
-    return result
-  } catch (error) {
-    listener.remove()
-    throw error
   }
 }
 
