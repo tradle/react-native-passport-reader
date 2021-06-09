@@ -37,6 +37,7 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.RCTNativeAppEventEmitter;
 
 import net.sf.scuba.smartcards.CardFileInputStream;
 import net.sf.scuba.smartcards.CardService;
@@ -91,6 +92,12 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
   private static final String PARAM_DOE = "dateOfExpiry";
   private static final String TAG = "passportreader";
   private static final String JPEG_DATA_URI_PREFIX = "data:image/jpeg;base64,";
+  
+  private static final String EVENT_NFC_PROGRESS = "EVENT_NFC_PROGRESS";
+  private static final String NFC_PROGRESS_ACCESS = "access";
+  private static final String NFC_PROGRESS_PERSONAL_INFO = "personal-info";
+  private static final String NFC_PROGRESS_PHOTO = "photo";
+  private static final String NFC_PROGRESS_VERIFICATION = "verification";
 
   private final ReactApplicationContext reactContext;
   private Promise scanPromise;
@@ -136,6 +143,11 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
     final Map<String, Object> constants = new HashMap<>();
     boolean hasNFC = reactContext.getPackageManager().hasSystemFeature(PackageManager.FEATURE_NFC);
     constants.put(KEY_IS_SUPPORTED, hasNFC);
+    constants.put("EVENT_NFC_PROGRESS", EVENT_NFC_PROGRESS);
+    constants.put("NFC_PROGRESS_ACCESS", NFC_PROGRESS_ACCESS);
+    constants.put("NFC_PROGRESS_PERSONAL_INFO", NFC_PROGRESS_PERSONAL_INFO);
+    constants.put("NFC_PROGRESS_PHOTO", NFC_PROGRESS_PHOTO);
+    constants.put("NFC_PROGRESS_VERIFICATION", NFC_PROGRESS_VERIFICATION);
     return constants;
   }
 
@@ -281,6 +293,9 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
     @Override
     protected Exception doInBackground(Void... params) {
       try {
+        getReactApplicationContext()
+                .getJSModule(RCTNativeAppEventEmitter.class)
+                .emit(EVENT_NFC_PROGRESS, NFC_PROGRESS_ACCESS);
 
         CardService cardService = CardService.getInstance(isoDep);
         cardService.open();
@@ -331,6 +346,10 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
         lds.add(PassportService.EF_DG2, dg2In, dg2In.getLength());
         dg2File = lds.getDG2File();
 
+        getReactApplicationContext()
+                .getJSModule(RCTNativeAppEventEmitter.class)
+                .emit(EVENT_NFC_PROGRESS, NFC_PROGRESS_PERSONAL_INFO);
+
         List<FaceImageInfo> allFaceImageInfos = new ArrayList<>();
         List<FaceInfo> faceInfos = dg2File.getFaceInfos();
         for (FaceInfo faceInfo : faceInfos) {
@@ -350,6 +369,9 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
 
         }
 
+        getReactApplicationContext()
+                .getJSModule(RCTNativeAppEventEmitter.class)
+                .emit(EVENT_NFC_PROGRESS, NFC_PROGRESS_PHOTO);
       } catch (Exception e) {
         return e;
       }
@@ -394,6 +416,10 @@ public class RNPassportReaderModule extends ReactContextBaseJavaModule implement
       passport.putString(KEY_NATIONALITY, mrzInfo.getNationality());
       passport.putString(KEY_GENDER, mrzInfo.getGender().toString());
       passport.putString(KEY_ISSUER, mrzInfo.getIssuingState());
+
+      getReactApplicationContext()
+              .getJSModule(RCTNativeAppEventEmitter.class)
+              .emit(EVENT_NFC_PROGRESS, NFC_PROGRESS_VERIFICATION);
 
       scanPromise.resolve(passport);
       resetState();

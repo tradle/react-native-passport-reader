@@ -34,7 +34,15 @@ If your app will not function without nfc capabilities, set `android:required` a
 ## Usage
 ```js
 import PassportReader from 'react-native-passport-reader'
-// { scan, cancel, isSupported }
+// { scan, cancel, constants }
+
+// Available constants (Android):
+// - isSupported
+// - NFC_PROGRESS_ACCESS
+// - NFC_PROGRESS_PERSONAL_INFO
+// - NFC_PROGRESS_PHOTO
+// - NFC_PROGRESS_VERIFICATION
+
 
 async function scan () {
   // 1. start a scan
@@ -53,7 +61,17 @@ async function scan () {
     // this is data you can get from reading the MRZ zone of the passport
     documentNumber: 'ofDocumentBeingScanned',
     dateOfBirth: 'yyMMdd',
-    dateOfExpiry: 'yyMMdd'
+    dateOfExpiry: 'yyMMdd',
+    
+    // Scan progress callback (optional)
+    onProgress: (progress) => {
+    	// progress: constants.NFC_PROGRESS_ACCESS | 
+    	//           constants.NFC_PROGRESS_PERSONAL_INFO | 
+    	//           constants.NFC_PROGRESS_PHOTO | 
+    	//           constants.NFC_PROGRESS_VERIFICATION
+    	
+    	// Update your progress bar here!
+    }
   })
 
   const { base64, width, height } = photo
